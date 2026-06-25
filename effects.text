@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Effects Library</title>
+    <style>
+        *{margin:0;padding:0;box-sizing:border-box}
+        body{background:#0a0a1a;color:#fff;font-family:sans-serif;padding:20px}
+        .container{max-width:700px;margin:auto;background:rgba(20,25,45,.85);border-radius:28px;padding:30px 25px;border:1px solid rgba(255,255,255,.08)}
+        h1{text-align:center;margin-bottom:20px}
+        .back-btn{display:inline-block;background:#334155;color:#fff;padding:8px 20px;border-radius:30px;text-decoration:none;font-size:13px;margin-bottom:15px}
+        .effect-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+        .effect-card{background:#13182b;border-radius:12px;padding:15px;border:1px solid #2a3050}
+        .effect-card .name{font-weight:bold;font-size:14px}
+        .effect-card .desc{font-size:12px;color:#94a3b8}
+        .download-btn{display:inline-block;background:linear-gradient(90deg,#2563eb,#4f7aff);color:#fff;padding:6px 16px;border-radius:30px;text-decoration:none;font-size:12px;font-weight:bold;margin-top:6px}
+        @media(max-width:480px){.effect-grid{grid-template-columns:1fr}}
+    </style>
+</head>
+<body>
+    <div class="container">
+        <a href="/" class="back-btn">Back to Hub</a>
+        <h1>Effects Library</h1>
+        <p style="text-align:center;color:#94a3b8;margin-bottom:20px;">Download effects for your SD card</p>
+        <div class="effect-grid">
+            <div class="effect-card">
+                <div class="name">Tornado Spiral</div>
+                <div class="desc">ID: 36 | Speed: 50 | Bright: 200</div>
+                <a href="/files/effects/config36.cfg" download class="download-btn">Download</a>
+            </div>
+            <div class="effect-card">
+                <div class="name">Fireworks</div>
+                <div class="desc">ID: 37 | Speed: 70 | Bright: 255</div>
+                <a href="/files/effects/config37.cfg" download class="download-btn">Download</a>
+            </div>
+            <div class="effect-card">
+                <div class="name">Multiple Tornadoes</div>
+                <div class="desc">ID: 41 | Speed: 60 | Bright: 200</div>
+                <a href="/files/effects/config41.cfg" download class="download-btn">Download</a>
+            </div>
+            <div class="effect-card">
+                <div class="name">Interference Waves</div>
+                <div class="desc">ID: 45 | Speed: 80 | Bright: 180</div>
+                <a href="/files/effects/config45.cfg" download class="download-btn">Download</a>
+            </div>
+            <div class="effect-card">
+                <div class="name">3D Text</div>
+                <div class="desc">ID: 153 | Speed: 50 | Bright: 200</div>
+                <a href="/files/effects/config153.cfg" download class="download-btn">Download</a>
+            </div>
+            <div class="effect-card">
+                <div class="name">Complex Vortex</div>
+                <div class="desc">ID: 154 | Speed: 60 | Bright: 200</div>
+                <a href="/files/effects/config154.cfg" download class="download-btn">Download</a>
+            </div>
+            <div class="effect-card">
+                <div class="name">Split Zigzag</div>
+                <div class="desc">ID: 155 | Speed: 40 | Bright: 220</div>
+                <a href="/files/effects/config155.cfg" download class="download-btn">Download</a>
+            </div>
+            <div class="effect-card">
+                <div class="name">Quantum</div>
+                <div class="desc">ID: 156 | Speed: 70 | Bright: 150</div>
+                <a href="/files/effects/config156.cfg" download class="download-btn">Download</a>
+            </div>
+            <div class="effect-card">
+                <div class="name">Hypercube</div>
+                <div class="desc">ID: 157 | Speed: 50 | Bright: 200</div>
+                <a href="/files/effects/config157.cfg" download class="download-btn">Download</a>
+            </div>
+            <div class="effect-card">
+                <div class="name">Chaos</div>
+                <div class="desc">ID: 158 | Speed: 80 | Bright: 255</div>
+                <a href="/files/effects/config158.cfg" download class="download-btn">Download</a>
+            </div>
+            <div class="effect-card">
+                <div class="name">Fluid</div>
+                <div class="desc">ID: 159 | Speed: 30 | Bright: 128</div>
+                <a href="/files/effects/config159.cfg" download class="download-btn">Download</a>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
