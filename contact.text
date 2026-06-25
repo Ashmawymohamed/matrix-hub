@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact</title>
+    <style>
+        *{margin:0;padding:0;box-sizing:border-box}
+        body{background:#0a0a1a;color:#fff;font-family:sans-serif;padding:20px}
+        .container{max-width:600px;margin:auto;background:rgba(20,25,45,.85);border-radius:28px;padding:30px 25px;border:1px solid rgba(255,255,255,.08)}
+        h1{text-align:center;margin-bottom:20px}
+        .back-btn{display:inline-block;background:#334155;color:#fff;padding:8px 20px;border-radius:30px;text-decoration:none;font-size:13px;margin-bottom:15px}
+        input,textarea{width:100%;padding:12px;margin:6px 0;background:#0f1425;border:2px solid #2a3050;border-radius:10px;color:#fff;font-size:14px;outline:none}
+        input:focus,textarea:focus{border-color:#4f7aff}
+        button{background:linear-gradient(90deg,#059669,#10b981);color:#fff;padding:12px 30px;border:none;border-radius:30px;font-weight:bold;font-size:16px;cursor:pointer;width:100%}
+        .status{margin-top:10px;padding:10px;border-radius:8px;display:none;text-align:center}
+        .status.success{display:block;background:rgba(5,150,105,.2);border:1px solid #059669;color:#64ffda}
+        .status.error{display:block;background:rgba(220,38,38,.2);border:1px solid #dc2626;color:#f87171}
+    </style>
+</head>
+<body>
+    <div class="container">
+        <a href="/" class="back-btn">Back to Hub</a>
+        <h1>Contact Us</h1>
+        <p style="color:#94a3b8;margin-bottom:15px;">Send us a message</p>
+        <input type="text" id="name" placeholder="Your Name">
+        <input type="email" id="email" placeholder="Your Email">
+        <textarea id="message" rows="4" placeholder="Your Message"></textarea>
+        <button onclick="sendMessage()">Send Message</button>
+        <div id="status" class="status"></div>
+    </div>
+    <script>
+        function sendMessage() {
+            const name=document.getElementById('name').value.trim();
+            const email=document.getElementById('email').value.trim();
+            const msg=document.getElementById('message').value.trim();
+            const status=document.getElementById('status');
+            if(!name||!email||!msg){status.className='status error';status.textContent='Please fill all fields';return;}
+            status.className='status';status.textContent='Sending...';status.style.display='block';
+            fetch('https://formspree.io/f/YOUR_FORM_ID',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({name,email,message:msg})})
+            .then(()=>{status.className='status success';status.textContent='Message sent!';document.getElementById('name').value='';document.getElementById('email').value='';document.getElementById('message').value='';})
+            .catch(()=>{status.className='status error';status.textContent='Error sending message';});
+        }
+    </script>
+</body>
+</html>
