@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FAQ</title>
+    <style>
+        *{margin:0;padding:0;box-sizing:border-box}
+        body{background:#0a0a1a;color:#fff;font-family:sans-serif;padding:20px}
+        .container{max-width:700px;margin:auto;background:rgba(20,25,45,.85);border-radius:28px;padding:30px 25px;border:1px solid rgba(255,255,255,.08)}
+        h1{text-align:center}
+        .back-btn{display:inline-block;background:#334155;color:#fff;padding:8px 20px;border-radius:30px;text-decoration:none;font-size:13px;margin-bottom:15px}
+        .faq-item{background:#13182b;border-radius:10px;padding:12px 16px;margin-bottom:10px;border-left:3px solid #00ff88}
+        .faq-item .q{font-weight:bold;color:#ffaa00;font-size:14px}
+        .faq-item .a{font-size:13px;color:#94a3b8;margin-top:4px}
+        .footer{text-align:center;color:#475569;font-size:12px;margin-top:20px}
+    </style>
+</head>
+<body>
+    <div class="container">
+        <a href="/" class="back-btn">Back to Hub</a>
+        <h1>FAQ</h1>
+        <div class="faq-item">
+            <div class="q">How do I load an effect?</div>
+            <div class="a">Download the .cfg file, copy it to the /effects folder on your SD card, then use the SD panel in the main page.</div>
+        </div>
+        <div class="faq-item">
+            <div class="q">What are the effect IDs?</div>
+            <div class="a">Each .cfg file contains an ID= line. This number determines which effect runs on the matrix.</div>
+        </div>
+        <div class="faq-item">
+            <div class="q">Can I create my own effects?</div>
+            <div class="a">Yes! Create a .cfg file with ID, SPEED, and BRIGHT lines, and save it to /effects on your SD card.</div>
+        </div>
+        <div class="footer">More questions? Contact us</div>
+    </div>
+</body>
+</html>
