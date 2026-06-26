@@ -5,6 +5,587 @@
         <div class="desc">ID: 36 | Speed: 50 | Bright: 200</div>
         <a href="/files/effects/config36.cfg" download class="download-btn">Download</a>
     </div>
+
+// ============================= 
+         //Effects 0-47
+//==============================
+// 0: matrixRainbow
+void matrixRainbow() { for(int c=0;c<COLS;c++) for(int r=0;r<ROWS;r++) leds[xyToIndex(c,r)]=CHSV((c*5+(int)(r/aspectRatio)*3+paletteTime)%255,255,255); paletteTime+=map(effectSpeed,1,100,1,5) * 5; }
+    
+// 1: matrixWave
+void matrixWave() { for(int c=0;c<COLS;c++) for(int r=0;r<ROWS;r++){uint8_t b=sin8((c*4+(int)(r/aspectRatio)*4+waveTime)%255);leds[xyToIndex(c,r)]=CHSV((c*3+waveTime)%255,255,b);} waveTime+=map(effectSpeed,1,100,2,8) * 5; }
+
+// 2: matrixFire
+void matrixFire() { for(int c=0;c<COLS;c++){for(int r=0;r<MAX_FIRE_ROWS-1;r++)heat[r][c]=(heat[r][c]+heat[r+1][c]*2)/3;if(random8()<50)heat[MAX_FIRE_ROWS-1][c]=qadd8(heat[MAX_FIRE_ROWS-1][c],random8(200,255));for(int r=0;r<MAX_FIRE_ROWS;r++){leds[xyToIndex(c,r)]=HeatColor(heat[r][c]);heat[r][c]=qsub8(heat[r][c],random8(0,4));}} }
+
+// 3: matrixStars
+void matrixStars() { fadeToBlackBy(leds,NUM_LEDS,50); if(random8()<80)leds[xyToIndex(random(COLS),random(ROWS))]=CHSV(random8(),255,255); 
+   map(effectSpeed,1,100,1,6) * 5; }
+    
+// 4: matrixPlasma 
+void matrixPlasma() { for(int c=0;c<COLS;c++)for(int r=0;r<ROWS;r+=4){uint8_t val=sin8(c*6+(int)(r/aspectRatio)*6+plasmaTime)+sin8((c*3+(int)(r/aspectRatio)*5+plasmaTime*2)%255);for(int k=0;k<4&&r+k<ROWS;k++)leds[xyToIndex(c,r+k)]=CHSV(val,255,255);} plasmaTime+=map(effectSpeed,1,100,1,5) * 5; }
+
+
+// 5: matrixIce
+void matrixIce() { for(int c=0;c<COLS;c++)for(int r=0;r<ROWS;r++){uint8_t b=sin8((c*3+(int)(r/aspectRatio)*2+iceTime)%255);leds[xyToIndex(c,r)]=CRGB(b/4,b/2,255);} iceTime+=map(effectSpeed,1,100,1,5) * 5; }
+
+// 6: matrixExplosion
+void matrixExplosion() { fill_solid(leds,NUM_LEDS,CRGB(0,0,0)); for(int c=0;c<COLS;c++)for(int r=0;r<ROWS;r++){float dx=c-centerCol,dy=(r-centerRow)/aspectRatio,dist=sqrt(dx*dx+dy*dy);if(abs(dist-explosionRadius)<3)leds[xyToIndex(c,r)]=CHSV((int)(explosionHue+dist*10)%255,255,255);} explosionRadius=(explosionRadius+map(effectSpeed,1,100,1,5))%40; explosionHue+=5; }
+
+
+// 7: matrixCenterWave
+void matrixCenterWave() { for(int c=0;c<COLS;c++)for(int r=0;r<ROWS;r++){float dx=c-centerCol,dy=(r-centerRow)/aspectRatio,dist=sqrt(dx*dx+dy*dy);uint8_t b=sin8((int)(dist*12-centerWaveTime));leds[xyToIndex(c,r)]=CHSV((int)(dist*8+centerWaveTime)%255,255,b);} centerWaveTime+=map(effectSpeed,1,100,2,10) * 5; }
+
+// 8:matrixSunbeam
+void matrixSunbeam() { for(int c=0;c<COLS;c++)for(int r=0;r<ROWS;r++){float dx=c-centerCol,dy=(r-centerRow)/aspectRatio,angle=atan2(dy,dx);uint8_t hue=(int)(angle*30+sunbeamTime)%255;leds[xyToIndex(c,r)]=CHSV(hue,255,255);} sunbeamTime+=map(effectSpeed,1,100,1,6) * 5; }
+
+// 9:matrixRainbowWave
+void matrixRainbowWave() { for(int c=0;c<COLS;c++)for(int r=0;r<ROWS;r++){uint8_t hue=((int)(r/aspectRatio)*8+rainbowWaveTime)%255,b=sin8(c*5+rainbowWaveTime);leds[xyToIndex(c,r)]=CHSV(hue,255,b);} rainbowWaveTime+=map(effectSpeed,1,100,1,6) * 5; }
+
+// 10:matrixRipple
+void matrixRipple() { for(int c=0;c<COLS;c++)for(int r=0;r<ROWS;r++){float dx=c-centerCol,dy=(r-centerRow)/aspectRatio,dist=sqrt(dx*dx+dy*dy);uint8_t b=sin8((int)(dist*15-rippleTime));leds[xyToIndex(c,r)]=CHSV((int)(dist*10+rippleTime)%255,255,b);} rippleTime+=map(effectSpeed,1,100,2,10) * 5; }
+
+// 11:matrixRadialLines
+void matrixRadialLines() { fill_solid(leds,NUM_LEDS,CRGB(0,0,0)); for(int i=0;i<12;i++){float ang=radians(radialAngle+i*30);for(float t=0;t<25;t++){int x=centerCol+cos(ang)*t,y=centerRow+sin(ang)*t*aspectRatio;if(x>=0&&x<COLS&&y>=0&&y<ROWS)leds[xyToIndex(x,y)]=CHSV((i*30+radialAngle)%255,255,255);}} radialAngle+=map(effectSpeed,1,100,2,8) * 5; }
+
+// 12:matrixZigzagWave
+void matrixZigzagWave() { for(int c=0;c<COLS;c++)for(int r=0;r<ROWS;r++){int shift=(int)(sin(((int)(r/aspectRatio)+zigzagOffset)*0.3)*4);int drawCol=(c+shift+COLS)%COLS;uint8_t hue=(drawCol*7+zigzagOffset)%255;leds[xyToIndex(c,r)]=CHSV(hue,255,255);} zigzagOffset+=map(effectSpeed,1,100,2,8) * 5; }
+
+
+// 13:matrixSunbeamRadial
+void matrixSunbeamRadial() { fill_solid(leds,NUM_LEDS,CRGB(0,0,0)); for(int i=0;i<16;i++){float ang=radians(sunbeamRadialAngle+i*22.5);for(float t=0;t<30;t++){int x=centerCol+cos(ang)*t,y=centerRow+sin(ang)*t*aspectRatio;if(x>=0&&x<COLS&&y>=0&&y<ROWS)leds[xyToIndex(x,y)]=CHSV((i*15+sunbeamRadialAngle)%255,255,255);}} sunbeamRadialAngle+=map(effectSpeed,1,100,1,6) * 5; }
+
+
+// 14:matrixCornersToCenter
+void matrixCornersToCenter() { for(int c=0;c<COLS;c++)for(int r=0;r<ROWS;r++){float dx=min(abs(c-0),abs(c-(COLS-1))),dy=min(abs((int)(r/aspectRatio)-0),abs((int)(r/aspectRatio)-(int)((ROWS-1)/aspectRatio))),dist=sqrt(dx*dx+dy*dy);uint8_t b=sin8((int)(dist*10+cornersTime));leds[xyToIndex(c,r)]=CHSV((int)(dist*8+cornersTime)%255,255,b);} cornersTime+=map(effectSpeed,1,100,1,6) * 5; }
+
+
+// 15:matrixRainFire
+// ========== PONG GAME FUNCTIONS ==========
+
+void drawDigit(int num, int x, int y, CRGB color) {
+  for(int i=0; i<3; i++) {
+    if(x+i < COLS && y >= 0 && y < ROWS) leds[xyToIndex(x+i, y)] = color;
+    if(x+i < COLS && y+2 >= 0 && y+2 < ROWS) leds[xyToIndex(x+i, y+2)] = color;
+  }
+  if(y+1 >= 0 && y+1 < ROWS) {
+    if(x < COLS) leds[xyToIndex(x, y+1)] = color;
+    if(x+2 < COLS) leds[xyToIndex(x+2, y+1)] = color;
+  }
+}
+
+void matrixRainFire() {
+  if(gameOver) {
+    fill_solid(leds, NUM_LEDS, CRGB::Black);
+    for(int i=4; i<COLS-4; i++) {
+       leds[xyToIndex(i, ROWS/2)] = CRGB::Red;
+    }
+    return;
+  }
+
+  // إجبار التهيئة إذا لم تبدأ اللعبة
+  if(!gameActive) {
+    resetBall();
+  }
+
+  fill_solid(leds, NUM_LEDS, CRGB::Black);
+  
+  // 1. تحديث الحركة
+  ball.x += ball.vx;
+  ball.y += ball.vy;
+    int cx = (int)ball.x;
+  int cy = (int)ball.y;
+  
+  // ارتداد الجوانب
+  if(ball.x <= 0 || ball.x >= COLS-1) {
+     ball.vx *= -1;
+     ball.x = constrain(ball.x, 1, COLS-2);
+  }
+  
+  // ارتداد السقف العلوي (منطقياً ROWS-1)
+  if(ball.y >= ROWS-1) {
+     ball.vy = -abs(ball.vy);
+     ball.y = ROWS-2;
+  }
+
+  // 2. رسم العداد في الأعلى فعلياً (نستخدم ROWS-6 ليكون في القمة)
+  int startX = (COLS / 2) - 6;
+  int topY = ROWS - 6; // رفعنا العداد لأقصى حد
+  drawDigit((score / 100) % 10, startX, topY, CRGB::Yellow);
+  drawDigit((score / 10) % 10, startX + 4, topY, CRGB::Yellow);
+  drawDigit(score % 10, startX + 8, topY, CRGB::Yellow);
+
+  // 3. رسم الكرة والدوران
+  if(cx >= 0 && cx < COLS && cy >= 0 && cy < ROWS) {
+    leds[xyToIndex(cx, cy)] = CRGB(0, 255, 0);
+    static uint16_t t = 0; 
+    t += 60;
+    int off[4][2] = {{0,-1}, {1,0}, {0,1}, {-1,0}};
+    for(int i=0; i<4; i++) {
+      int px = cx + off[i][0];
+      int py = cy + off[i][1];
+      if(px >= 0 && px < COLS && py >= 0 && py < ROWS) {
+        uint8_t hue = (t + (i * 64)) & 0xFF;
+        uint8_t bright = sin8(t + (i * 64));
+        leds[xyToIndex(px, py)] = CHSV(hue, 255, bright);
+      }
+    }
+  }
+  
+  // 4. رسم المضرب في الأسفل فعلياً (منطقياً 0 و 1)
+  static int dir = 1;
+  paddleX += dir;
+  if(paddleX <= 0 || paddleX >= COLS - 7) dir *= -1;
+  int pX = constrain(paddleX, 0, COLS - 7);
+
+  for(int i=0; i<7; i++) {
+     if(pX+i < COLS) {
+        leds[xyToIndex(pX+i, 0)] = CRGB::Blue; 
+        leds[xyToIndex(pX+i, 1)] = CRGB::Blue; 
+     }  }
+  
+  // 5. الاصطدام بالمضرب (عند y=0,1,2)
+  if(cy <= 2 && cx >= pX && cx <= pX+6) {
+     ball.vy = abs(ball.vy) + 0.5; // زيادة السرعة قليلاً عند الصد
+     ball.y = 3; 
+     score++;
+  }
+  
+  // 6. الخسارة (إذا خرجت من السقف المنطقي)
+  if(ball.y >= ROWS) {
+     lives--;
+     if(lives <= 0) gameOver = true;
+     else resetBall();
+  }
+}
+    
+// 16:matrixAurora
+void matrixAurora() { for(int c=0;c<COLS;c++)for(int r=0;r<ROWS;r++){uint8_t hue=(c*2+sin8((int)(r/aspectRatio)*5+auroraTime))%255,b=sin8((int)(r/aspectRatio)*4+auroraTime);leds[xyToIndex(c,r)]=CHSV(hue,255,b);} auroraTime+=map(effectSpeed,1,100,1,5) * 5; }
+
+//17:matrixSunbeamLongitudinal
+void matrixSunbeamLongitudinal() { fill_solid(leds,NUM_LEDS,CRGB(0,0,0)); int rays=16; for(int i=0;i<rays;i++){float angle=radians(sunbeamLongTime+i*(360.0/rays));for(float dist=0;dist<25;dist+=1.0){int x=centerCol+cos(angle)*dist,y=centerRow+sin(angle)*dist*aspectRatio;if(x>=0&&x<COLS&&y>=0&&y<ROWS){uint8_t bright=map((int)dist,0,25,255,50);leds[xyToIndex(x,y)]=CHSV((sunbeamLongTime+i*20)%255,255,bright);}}} sunbeamLongTime+=map(effectSpeed,1,100,1,6) * 5; }
+
+// 18:matrixMovingCubes
+void matrixMovingCubes() { fadeToBlackBy(leds,NUM_LEDS,50); if(random8()<20){int startX=(random8()<50)?(int)centerCol:random(COLS),startY=(random8()<50)?(int)centerRow:random(ROWS);if(startY<ROWS&&startX<COLS&&startY<MAX_CUBE_ROWS)cubeGrid[startY][startX]=255;} for(int c=0;c<COLS;c++)for(int r=0;r<ROWS;r++){if(r<MAX_CUBE_ROWS&&cubeGrid[r][c]>0){for(int dx=0;dx<2;dx++)for(int dy=0;dy<2;dy++){int nx=c+dx-1,ny=r+dy-1;if(nx>=0&&nx<COLS&&ny>=0&&ny<ROWS)leds[xyToIndex(nx,ny)]=CHSV((cubesTime+c*5)%255,255,cubeGrid[r][c]);}if(random8()<100){int nr=r+(random8()<50?1:-1),nc=c+(random8()<50?1:-1);if(nr>=0&&nr<MAX_CUBE_ROWS&&nc>=0&&nc<COLS){cubeGrid[nr][nc]=cubeGrid[r][c];cubeGrid[r][c]=0;}}cubeGrid[r][c]=qsub8(cubeGrid[r][c],5);}} cubesTime+=map(effectSpeed,1,100,1,6) * 5; }
+
+
+// 19:matrixRainStopFire
+
+void matrixRainStopFire() {
+
+  static uint16_t rayPulse = 0, centerHue = 0, stageCounter = 0, ringRadius = 0;
+  static unsigned long lastUpdate = 0;
+  const int updateDelay = 50;
+
+  if (millis() - lastUpdate < updateDelay) return;
+  lastUpdate = millis();
+
+  fill_solid(leds, NUM_LEDS, CRGB(0, 0, 0));
+
+  int innerRadius = 4, numRays = 24, maxDistance = 35;
+  float waveSpeed = 1.5, waveWidth = 4.0;
+  static float rayAngles[24];
+  static bool anglesInitialized = false;
+  if (!anglesInitialized) {
+    for (int i = 0; i < numRays; i++) rayAngles[i] = i * (360.0 / numRays) * PI / 180;
+    anglesInitialized = true;
+  }
+
+  const int centerCol = COLS / 2;
+  const int centerRow = ROWS / 2;
+
+  // النواة الداخلية (قلب الشمس) بنصف سطوع
+  for (int c = -innerRadius; c <= innerRadius; c++) {
+    for (int r = -innerRadius; r <= innerRadius; r++) {
+      float dist = sqrt(c * c + r * r);
+      if (dist <= innerRadius) {
+        int x = centerCol + c, y = centerRow + r;
+        if (x >= 0 && x < COLS && y >= 0 && y < ROWS) {
+          uint8_t hue = (centerHue + (int)(dist * 20)) % 255;
+          uint8_t bright = (255 - (dist * 20)) / 2;
+          leds[xyToIndex(x, y)] = CHSV(hue, 255, bright);
+        }
+      }
+    }
+  }
+  centerHue = (centerHue + 5) % 255;
+
+  // ========== مرحلة 0: أشعة متحركة ==========
+  if (stageCounter == 0) {
+    for (int i = 0; i < numRays; i++) {
+      float dirX = cos(rayAngles[i]), dirY = sin(rayAngles[i]);
+      float startX = centerCol + dirX * innerRadius, startY = centerRow + dirY * innerRadius;
+      for (int t = 0; t < maxDistance; t++) {
+        int x = (int)(startX + dirX * t), y = (int)(startY + dirY * t);
+        if (x >= 0 && x < COLS && y >= 0 && y < ROWS) {
+          float wavePos = rayPulse * waveSpeed;
+          float diff = abs(t - wavePos);
+          float intensity = 1.0 - (diff / waveWidth);
+          if (intensity < 0) intensity = 0;
+          intensity = intensity * intensity;
+          float fade = 1.0 - (t / (float)maxDistance) * 0.5;
+          uint8_t brightness = 250 * intensity * fade;
+          if (brightness > 15) {
+            uint8_t hue = (t * 8 + rayPulse * 4) % 255;
+            CRGB rayColor = CHSV(hue, 255, brightness);
+            if (diff < 1.8) {
+              rayColor = CRGB(brightness, brightness * 0.9, brightness * 0.8);
+            }
+            leds[xyToIndex(x, y)] = rayColor;
+          }
+        }
+      }
+    }
+    rayPulse += 1;
+    if (rayPulse >= 20) {
+      rayPulse = 0;
+      stageCounter = 1;
+      ringRadius = 0;
+    }
+  }
+  // ========== مرحلة 1: حلقات متوسعة ==========
+  else if (stageCounter == 1) {
+    for (int r = 0; r <= ringRadius; r++) {
+      for (int angle = 0; angle < 360; angle += 10) {
+        float radian = angle * PI / 180;
+        int x = centerCol + r * cos(radian);
+        int y = centerRow + r * sin(radian);
+        if (x >= 0 && x < COLS && y >= 0 && y < ROWS) {
+          uint8_t hue = (centerHue + r * 10) % 255;
+          uint8_t bright = 255 - (r * 6);
+          if (bright > 0) leds[xyToIndex(x, y)] = CHSV(hue, 255, bright);
+        }
+      }
+    }
+    ringRadius += 2;
+    if (ringRadius > maxDistance) {
+      stageCounter = 0;   // ✅ العودة فوراً إلى المرحلة 0 بدون أي وميض
+      ringRadius = 0;
+    }
+  }
+  
+  FastLED.show();
+}
+    
+// 20:matrixSpiralOutward
+void matrixSpiralOutward() { 
+        fill_solid(leds,NUM_LEDS,CRGB(0,0,0)); for(float t=0;t<50;t+=0.3){float angle=t*0.5+spiralTime*0.1,radius=t*0.4;int x=centerCol+cos(angle)*radius,y=centerRow+sin(angle)*radius*aspectRatio;if(x>=0&&x<COLS&&y>=0&&y<ROWS)leds[xyToIndex(x,y)]=CHSV((int)(t*10+spiralTime)%255,255,255);} spiralTime+=map(effectSpeed,1,100,2,8); }
+
+// 21:matrixPulseGrid
+void matrixPulseGrid() {
+  for (int c = 0; c < COLS; c++)
+    for (int r = 0; r < ROWS; r++) {
+      bool isLine = (c % 6 == 0) || (r % 6 == 0);
+      if (isLine) {
+        float dist = sqrt(pow(c - 18.5, 2) + pow(r - 15.5, 2));
+        uint8_t b = sin8((int)(dist * 5 - gridPulseTime) % 255);
+        leds[xyToIndex(c, r)] = CHSV((int)(gridPulseTime + dist * 4) % 255, 255, b);
+      } else
+        leds[xyToIndex(c, r)].fadeToBlackBy(50);    }
+  gridPulseTime += map(effectSpeed, 1, 100, 2, 8)*5;
+}
+    
+
+// 22:matrixDiagonalRainbow
+void matrixDiagonalRainbow() { for(int c=0;c<COLS;c++)for(int r=0;r<ROWS;r++){uint8_t hue=((c+(int)(r/aspectRatio))*4+diagTime)%255,b=sin8((c-(int)(r/aspectRatio))*3+diagTime);leds[xyToIndex(c,r)]=CHSV(hue,255,b);} diagTime+=map(effectSpeed,1,100,1,6) * 5; }
+
+// 23:matrixParticleFlow
+void matrixParticleFlow() { fadeToBlackBy(leds,NUM_LEDS,30); for(int i=0;i<10;i++){float angle=particleTime*0.05+i*0.6,radius=fmod(particleTime*0.2+i*5,30);int x=centerCol+cos(angle)*radius,y=centerRow+sin(angle)*radius*aspectRatio;if(x>=0&&x<COLS&&y>=0&&y<ROWS)leds[xyToIndex(x,y)]=CHSV((i*40+particleTime)%255,255,255);} particleTime+=map(effectSpeed,1,100,2,8) * 5; }
+
+// 24:matrixNeonGrid
+void matrixNeonGrid() { for(int c=0;c<COLS;c++)for(int r=0;r<ROWS;r++){if((c+(int)(r/aspectRatio))%2==0){uint8_t b=sin8(c*4+(int)(r/aspectRatio)*4+neonTime);leds[xyToIndex(c,r)]=CHSV((neonTime+c*5)%255,255,b);}else leds[xyToIndex(c,r)]=CRGB(0,0,0);} neonTime+=map(effectSpeed,1,100,1,5) * 5; }
+
+// 25:matrixVortex
+void matrixVortex() { for(int c=0;c<COLS;c++)for(int r=0;r<ROWS;r++){float dx=c-centerCol,dy=(r-centerRow)/aspectRatio,angle=atan2(dy,dx),dist=sqrt(dx*dx+dy*dy);uint8_t hue=((int)(angle*30)+(int)(dist*5)+vortexTime)%255,b=sin8((int)(dist*8)+vortexTime);leds[xyToIndex(c,r)]=CHSV(hue,255,b);} vortexTime+=map(effectSpeed,1,100,2,8) * 5; }
+
+
+// 26:matrixWaveBounce
+void matrixWaveBounce() { for(int c=0;c<COLS;c++)for(int r=0;r<ROWS;r++){float val=sin((c*0.3+bounceTime*0.1))*cos(((int)(r/aspectRatio)*0.3+bounceTime*0.1));uint8_t b=map(val*1000,-1000,1000,0,255);leds[xyToIndex(c,r)]=CHSV((b+bounceTime)%255,255,b);} bounceTime+=map(effectSpeed,1,100,2,10) * 5; }
+
+// 27:matrixColorPulseColumns
+void matrixColorPulseColumns() { for(int c=0;c<COLS;c++){uint8_t hue=(c*10+pulseColTime)%255,b=sin8(pulseColTime+c*5);for(int r=0;r<ROWS;r++)leds[xyToIndex(c,r)]=CHSV(hue,255,b);} pulseColTime+=map(effectSpeed,1,100,2,8) * 5; }
+
+// 28:matrixStarBurst
+void matrixStarBurst() { fill_solid(leds,NUM_LEDS,CRGB(0,0,0)); for(int i=0;i<20;i++){float angle=random(360)*0.017,speed=random(1,4),dist=fmod(burstTime*speed+i*10,30);int x=centerCol+cos(angle)*dist,y=centerRow+sin(angle)*dist*aspectRatio;if(x>=0&&x<COLS&&y>=0&&y<ROWS)leds[xyToIndex(x,y)]=CHSV((burstTime+i*12)%255,255,255);} burstTime+=map(effectSpeed,1,100,1,5) * 5; }
+
+// 29:matrixMovingCars
+void matrixMovingCars() { fill_solid(leds,NUM_LEDS,CRGB(0,0,0)); int roadY1=(int)centerRow-5,roadY2=(int)centerRow+5; for(int c=0;c<COLS;c++){if(roadY1>=0&&roadY1<ROWS)leds[xyToIndex(c,roadY1)]=CRGB(50,50,50);if(roadY2>=0&&roadY2<ROWS)leds[xyToIndex(c,roadY2)]=CRGB(50,50,50);if(c%4<2){if((int)centerRow>=0&&(int)centerRow<ROWS){leds[xyToIndex(c,(int)centerRow)]=CRGB(200,200,200);if((int)centerRow+1<ROWS)leds[xyToIndex(c,(int)centerRow+1)]=CRGB(200,200,200);}}} for(int i=0;i<5;i++){if(!cars[i].active&&random8()<5){cars[i].active=true;cars[i].y=(random8()<50)?roadY1:roadY2;cars[i].x=0;cars[i].color=CHSV(random8(),255,255);cars[i].speed=random(2,5);}if(cars[i].active){for(int dx=0;dx<4;dx++){int x=cars[i].x+dx;if(x>=0&&x<COLS){int y=cars[i].y+(dx%2);if(y>=0&&y<ROWS)leds[xyToIndex(x,y)]=cars[i].color;}}cars[i].x+=cars[i].speed;if(cars[i].x>COLS)cars[i].active=false;}} }
+
+// 30:matrixRainbowWaveH
+void matrixRainbowWaveH() { for(int c=0;c<COLS;c++)for(int r=0;r<ROWS;r++){float waveOffset=sin((c-rainbowWaveHTime*0.3)*0.2)*8,distFromCenter=abs((int)(r/aspectRatio)-(int)(centerRow/aspectRatio)-waveOffset);if(distFromCenter<6){uint8_t hue=(c*5+rainbowWaveHTime)%255,bright=255-(distFromCenter*40);leds[xyToIndex(c,r)]=CHSV(hue,255,bright);}else leds[xyToIndex(c,r)]=CRGB(0,0,0);} rainbowWaveHTime+=map(effectSpeed,1,100,2,8) * 5; }
+
+// 31:matrixCenterBurst
+void matrixCenterBurst() { fill_solid(leds,NUM_LEDS,CRGB(0,0,0)); int radius=(centerBurstTime/4)%30; for(int c=0;c<COLS;c++)for(int r=0;r<ROWS;r++){float dx=c-centerCol,dy=(r-centerRow)/aspectRatio,dist=sqrt(dx*dx+dy*dy);if(abs(dist-radius)<2){uint8_t hue=(centerBurstTime+(int)(dist*10))%255;leds[xyToIndex(c,r)]=CHSV(hue,255,255);}} centerBurstTime+=map(effectSpeed,1,100,2,8) * 5; }
+
+// 32:matrixRadialRainbow
+void matrixRadialRainbow() { for(int c=0;c<COLS;c++)for(int r=0;r<ROWS;r++){float dx=c-centerCol,dy=(r-centerRow)/aspectRatio,angle=atan2(dy,dx);uint8_t hue=(int)(angle*50+radialRainbowTime)%255;leds[xyToIndex(c,r)]=CHSV(hue,255,255);} radialRainbowTime+=map(effectSpeed,1,100,1,5) * 5; }
+
+// 33:matrixCenterPulse
+void matrixCenterPulse() { for(int c=0;c<COLS;c++)for(int r=0;r<ROWS;r++){float dx=c-centerCol,dy=(r-centerRow)/aspectRatio,dist=sqrt(dx*dx+dy*dy);uint8_t b=sin8((int)(dist*10-centerPulseTime));leds[xyToIndex(c,r)]=CHSV((centerPulseTime)%255,255,b);} centerPulseTime+=map(effectSpeed,1,100,2,10) * 5; }
+
+// 34:matrixExpandingRings
+void matrixExpandingRings() { fill_solid(leds,NUM_LEDS,CRGB(0,0,0)); int ringCount=3; for(int i=0;i<ringCount;i++){int radius=(expandingRingsTime+i*20)%30;for(int c=0;c<COLS;c++)for(int r=0;r<ROWS;r++){float dx=c-centerCol,dy=(r-centerRow)/aspectRatio,dist=sqrt(dx*dx+dy*dy);if(abs(dist-radius)<1.5){uint8_t hue=(expandingRingsTime+i*30)%255;leds[xyToIndex(c,r)]=CHSV(hue,255,255);}}} expandingRingsTime+=map(effectSpeed,1,100,2,8) * 5; }
+
+// 35:matrixVortexCenter
+void matrixVortexCenter() { for(int c=0;c<COLS;c++)for(int r=0;r<ROWS;r++){float dx=c-centerCol,dy=(r-centerRow)/aspectRatio,angle=atan2(dy,dx),dist=sqrt(dx*dx+dy*dy);uint8_t hue=(int)(angle*40+vortexCenterTime)%255,bright=sin8((int)(dist*12-vortexCenterTime));leds[xyToIndex(c,r)]=CHSV(hue,255,bright);} vortexCenterTime+=map(effectSpeed,1,100,2,8) * 5; }
+
+
+// 36:initParticles3D
+void initParticles3D() { 
+  static uint16_t t = 0;
+  t += 2;
+  
+  fill_solid(leds, NUM_LEDS, CRGB::Black);
+  
+  int spacing = 4; // المسافة بين خطوط الشبكة
+  
+  // رسم الخطوط العمودية والأفقية
+  for(int x = 0; x < COLS; x++) {
+    for(int y = 0; y < ROWS; y++) {
+      if(x % spacing == 0 || y % spacing == 0) {
+        // حساب اللون بناءً على الموقع والزمن
+        uint8_t hue = (x + y + t) % 255;
+        uint8_t bright = sin8(t + x * 10); // نبض ضوئي
+        
+        leds[xyToIndex(x, y)] = CHSV(hue, 255, bright);
+      }
+    }
+  }
+}
+        
+// 37:initDancingCubes
+void initDancingCubes() { static uint16_t radius = 0;
+  static uint8_t hue = 0;
+  
+  fadeToBlackBy(leds, NUM_LEDS, 20); // تلاشي تدريجي
+  
+  int cx = COLS / 2;
+  int cy = ROWS / 2;
+  
+  // زيادة نصف القطر
+  radius += 1;
+  if(radius > max(COLS, ROWS)) {
+    radius = 0;
+    hue += 30; // تغيير اللون عند كل انفجار جديد
+  }
+  
+  // رسم دائرة متوسعة
+  for(int angle = 0; angle < 360; angle += 5) {
+    float rad = angle * PI / 180;
+    int x = cx + (int)(radius * cos(rad));
+    int y = cy + (int)(radius * sin(rad));
+    
+    if(x >= 0 && x < COLS && y >= 0 && y < ROWS) {
+      leds[xyToIndex(x, y)] = CHSV(hue, 255, 255);
+      
+      // إضافة ذيل صغير للانفجار
+      int x2 = cx + (int)((radius - 2) * cos(rad));
+      int y2 = cy + (int)((radius - 2) * sin(rad));
+      if(x2 >= 0 && x2 < COLS && y2 >= 0 && y2 < ROWS) {
+        leds[xyToIndex(x2, y2)] = CHSV(hue, 255, 100);
+      }
+    }
+  }
+}
+
+  
+//38:matrixDancingCubes
+
+// ========== NEW EFFECT: COSMIC BUBBLES (168) ==========
+
+struct CosmicBubble {
+  float x, y;       // الموقع الحالي
+  float vx, vy;     // السرعة والاتجاه
+  int radius;       // نصف القطر (الحجم)
+  uint8_t hue;      // اللون
+  int starCount;    // عدد النجوم داخل الدائرة
+};
+
+CosmicBubble bubbles[12]; // 12 دائرة في نفس الوقت
+
+void matrixDancingCubes() { 
+  static bool initialized = false;
+  
+  // 1. التهيئة الأولية (مر���� واحدة)
+  if(!initialized) {
+    for(int i=0; i<12; i++) {
+      bubbles[i].x = random(COLS);
+      bubbles[i].y = random(ROWS);
+      bubbles[i].vx = (random(10) - 5) / 10.0; // سرعة عشوائية بطيئة
+      bubbles[i].vy = (random(10) - 5) / 10.0;
+      bubbles[i].radius = 2 + random(5); // أحجام بين 2 و 6
+      bubbles[i].hue = random(255);
+      bubbles[i].starCount = 1 + random(3); // 1 إلى 3 نجوم داخل الدائرة
+    }
+    initialized = true;
+  }
+  
+  // 2. مسح الشاشة بتلاشي خفيف لعمل ذيل للحركة
+  fadeToBlackBy(leds, NUM_LEDS, 30);
+  
+  // 3. تحديث ورسم كل دائرة
+  for(int i=0; i<12; i++) {
+    // تحريك الدائرة
+    bubbles[i].x += bubbles[i].vx;
+    bubbles[i].y += bubbles[i].vy;
+    
+    // الارتداد عن الحواف
+    if(bubbles[i].x < 0 || bubbles[i].x >= COLS) bubbles[i].vx *= -1;
+    if(bubbles[i].y < 0 || bubbles[i].y >= ROWS) bubbles[i].vy *= -1;
+    
+    // تغيير اللون ببطء
+    bubbles[i].hue += 1;
+    
+    // رسم محيط الدائرة
+    CRGB color = CHSV(bubbles[i].hue, 255, 200);
+    
+    // خوارزمية رسم دائرة بسيطة (Midpoint Circle Algorithm مبسط)
+    int r = bubbles[i].radius;
+    int cx = (int)bubbles[i].x;
+    int cy = (int)bubbles[i].y;
+    
+    for(int angle = 0; angle < 360; angle += 10) { // رسم نقاط كل 10 درجات
+      float rad = angle * PI / 180;
+      int px = cx + (int)(r * cos(rad));
+      int py = cy + (int)(r * sin(rad));
+      
+      if(px >= 0 && px < COLS && py >= 0 && py < ROWS) {
+        leds[xyToIndex(px, py)] += color; // إضافة اللون للتداخل
+      }
+    }
+    
+    // رسم النجوم داخل الدائرة (تتحرك مع المركز)
+    for(int s=0; s<bubbles[i].starCount; s++) {
+      // مواقع ن��بية ثابتة للنجوم داخل الدائرة
+      int sx = cx + (s % 2 == 0 ? 1 : -1); 
+      int sy = cy + (s > 0 ? 1 : -1);
+      
+      if(sx >= 0 && sx < COLS && sy >= 0 && sy < ROWS) {
+        leds[xyToIndex(sx, sy)] = CRGB::White; // النجوم بيضاء ساطعة
+      }
+    }
+  }
+}
+    
+// 39:matrixHeavyRain
+void matrixHeavyRain() { fadeToBlackBy(leds,NUM_LEDS,30); for(int c=0;c<COLS;c++){if(random8()<30){rainDrops[c]=ROWS-1;rainSpeed[c]=2+random(3);}if(rainDrops[c]>0){int r=rainDrops[c];if(r>=0&&r<ROWS){uint8_t hue=(c*5+heavyRainTime)%180,bright=255-(r*8);leds[xyToIndex(c,r)]=CHSV(hue,255,bright);}rainDrops[c]-=rainSpeed[c];}} heavyRainTime+=map(effectSpeed,1,100,2,8) * 5; }
+
+// 40:matrixCornerRays
+void matrixCornerRays() { fill_solid(leds,NUM_LEDS,CRGB(0,0,0)); int corners[4][2]={{0,0},{COLS-1,0},{0,ROWS-1},{COLS-1,ROWS-1}}; for(int i=0;i<4;i++){int startX=corners[i][0],startY=corners[i][1];for(float t=0;t<=1;t+=0.03){int x=startX+(int)((centerCol-startX)*t),y=startY+(int)((centerRow-startY)*t);int idx=xyToIndex(x,y);if(idx>=0&&idx<NUM_LEDS){uint8_t hue=(cornerRaysTime+i*64)%255,bright=255*(1-t);leds[idx]=CHSV(hue,255,bright);}}} int centerIdx=xyToIndex((int)centerCol,(int)centerRow);if(centerIdx>=0)leds[centerIdx]=CHSV(cornerRaysTime%255,255,255); cornerRaysTime+=map(effectSpeed,1,100,2,8) * 5; }
+
+// 41:initStarExplosion
+void initStarExplosion() { activeStars=0; for(int i=0;i<50;i++)stars[i].active=false; }
+void matrixStarExplosion() { if(starExplosionTime==0){initStarExplosion();for(int i=0;i<30&&activeStars<50;i++){stars[activeStars].x=centerCol;stars[activeStars].y=centerRow;float angle=random(360)*PI/180,speed=0.5+random(100)/50.0;stars[activeStars].vx=cos(angle)*speed;stars[activeStars].vy=sin(angle)*speed*aspectRatio;stars[activeStars].hue=random(255);stars[activeStars].life=100+random(100);stars[activeStars].active=true;activeStars++;}} fadeToBlackBy(leds,NUM_LEDS,map(effectSpeed,1,100,10,40)); for(int i=0;i<50;i++){if(!stars[i].active)continue;stars[i].x+=stars[i].vx;stars[i].y+=stars[i].vy;stars[i].life-=map(effectSpeed,1,100,1,3);if(stars[i].x<0||stars[i].x>=COLS||stars[i].y<0||stars[i].y>=ROWS||stars[i].life<=0){stars[i].active=false;activeStars--;if(random8()<30&&activeStars<50){for(int j=0;j<50;j++)if(!stars[j].active){stars[j].x=stars[i].x;stars[j].y=stars[i].y;float angle=random(360)*PI/180,speed=0.3+random(100)/50.0;stars[j].vx=cos(angle)*speed;stars[j].vy=sin(angle)*speed*aspectRatio;stars[j].hue=(stars[i].hue+random(30))%255;stars[j].life=60+random(80);stars[j].active=true;activeStars++;break;}}continue;}int x=(int)stars[i].x,y=(int)stars[i].y;if(x>=0&&x<COLS&&y>=0&&y<ROWS){int idx=xyToIndex(x,y);uint8_t brightness=map(stars[i].life,0,200,0,255);leds[idx]=CHSV(stars[i].hue,255,brightness);}} starExplosionTime+=map(effectSpeed,1,100,1,5) * 5; if(activeStars==0&&starExplosionTime>50)starExplosionTime=0; }
+
+
+// 42:matrixGraySunRays
+ // ========== تأثير قرص الشمس المتطور (3 مراحل) ==========
+
+void matrixGraySunRays() {
+  const int centerCol = COLS / 2;
+  const int centerRow = ROWS / 2;
+  const int numRays = 36;
+  const int maxDistance = 45;
+  
+  // 🔻 خفضنا سطوع اللون الذهبي إلى النصف وجعلناه أقل تشبعاً (أصفر باهت)
+  const CRGB goldColor(100, 80, 0);   // كان (255,200,0) الآن أخف
+  
+  static float pulseDist = 0;
+  static float pulseSpeed = 3.5;       // ⚡ أسرع (كان 2.8)
+  static uint8_t pulseHue = 0;
+  static bool movingOut = true;
+  static unsigned long lastUpdate = 0;
+  
+  // تحديث أسرع
+  int delayMs = map(effectSpeed, 1, 100, 10, 2);
+  if (millis() - lastUpdate < delayMs) return;
+  lastUpdate = millis();
+  
+  fill_solid(leds, NUM_LEDS, CRGB(0,0,0));
+  
+  static float rayAngles[36];
+  static bool anglesInit = false;
+  if (!anglesInit) {
+    for (int i = 0; i < numRays; i++)
+      rayAngles[i] = i * (360.0 / numRays) * PI / 180;
+    anglesInit = true;
+  }
+  
+  // رسم الأشعة الذهبية الخفيفة (مع تخفيف كبير)
+  for (int i = 0; i < numRays; i++) {
+    float dirX = cos(rayAngles[i]), dirY = sin(rayAngles[i]);
+    for (int t = 1; t <= maxDistance; t++) {
+      int x = centerCol + round(dirX * t);
+      int y = centerRow + round(dirY * t);
+      if (x >= 0 && x < COLS && y >= 0 && y < ROWS) {
+        uint8_t bright = map(t, 1, maxDistance, 20, 5);  // سطوع منخفض جداً
+        CRGB dimGold = goldColor;
+        dimGold.nscale8_video(bright);
+        int idx = xyToIndex(x, y);
+        if (idx >= 0) leds[idx] = dimGold;
+      }
+    }
+  }
+  
+  // رسم النبض الملون (قوي ومشرق، ويطغى على الذهبي)
+  float waveWidth = 2.5;   // أضيق وأكثر حدة
+  for (int i = 0; i < numRays; i++) {
+    float dirX = cos(rayAngles[i]), dirY = sin(rayAngles[i]);
+    for (int t = 0; t <= maxDistance; t++) {
+      int x = centerCol + round(dirX * t);
+      int y = centerRow + round(dirY * t);
+      if (x >= 0 && x < COLS && y >= 0 && y < ROWS) {
+        float diff = abs(t - pulseDist);
+        float intensity = 1.0 - (diff / waveWidth);
+        if (intensity < 0) intensity = 0;
+        uint8_t pulseBright = 255 * intensity;
+        if (pulseBright > 10) {
+          // لون متغير بسرعة عالية (كل إطار تقريباً)
+          CRGB pulseColor = CHSV(pulseHue, 255, pulseBright);
+          int idx = xyToIndex(x, y);
+          if (idx >= 0) {
+            // نستبدل اللون الحالي باللون المتحرك مباشرة (بدون مزج ضعيف)
+            leds[idx] = pulseColor;
+          }
+        }
+      }
+    }
+  }
+  
+  // تحديث موقع النبض وتغيير اللون بسرعة أكبر
+  if (movingOut) {
+    pulseDist += pulseSpeed;
+    if (pulseDist >= maxDistance) {
+      pulseDist = maxDistance;
+      movingOut = false;
+      pulseHue = (pulseHue + 45) % 255;  // تغيير أسرع للأ��وان
+    }
+  } else {
+    pulseDist -= pulseSpeed;
+    if (pulseDist <= 0) {
+      pulseDist = 0;
+      movingOut = true;
+      pulseHue = (pulseHue + 25) % 255;  // تغيير أسرع
+    }
+  }
+  
+  FastLED.show();
+}
+    
+// 43:matrixLayeredWaves
+void matrixLayeredWaves() { for(int c=0;c<COLS;c++)for(int r=0;r<ROWS;r++){int layer=(int)(r/aspectRatio)/4,offset=(layer*20+layeredWaveTime)%255;uint8_t hue=(c*3+offset)%255,bright=sin8((int)(r/aspectRatio)*10-layeredWaveTime);leds[xyToIndex(c,r)]=CHSV(hue,255,bright);} layeredWaveTime+=map(effectSpeed,1,100,2,8) * 5; }
+
+// 44:matrix3DParticles
+void matrix3DParticles() { if(particle3DTime==0){initParticles3D();for(int i=0;i<30&&activeParticles3D<100;i++){particles3D[activeParticles3D].x=random(80)/10.0-4;particles3D[activeParticles3D].y=random(80)/10.0-4;particles3D[activeParticles3D].z=random(80)/10.0-4;particles3D[activeParticles3D].vx=(random(30)-15)/20.0;particles3D[activeParticles3D].vy=(random(30)-15)/20.0;particles3D[activeParticles3D].vz=(random(30)-15)/20.0;particles3D[activeParticles3D].hue=random(255);particles3D[activeParticles3D].active=true;activeParticles3D++;}} fadeToBlackBy(leds,NUM_LEDS,20); for(int i=0;i<100;i++){if(!particles3D[i].active)continue;particles3D[i].x+=particles3D[i].vx;particles3D[i].y+=particles3D[i].vy;particles3D[i].z+=particles3D[i].vz;if(abs(particles3D[i].x)>5){particles3D[i].vx=-particles3D[i].vx;particles3D[i].x=constrain(particles3D[i].x,-5,5);}if(abs(particles3D[i].y)>5){particles3D[i].vy=-particles3D[i].vy;particles3D[i].y=constrain(particles3D[i].y,-5,5);}if(abs(particles3D[i].z)>5){particles3D[i].vz=-particles3D[i].vz;particles3D[i].z=constrain(particles3D[i].z,-5,5);}int screenX=(int)(centerCol+particles3D[i].x*2),screenY=(int)(centerRow+particles3D[i].y*2*aspectRatio);uint8_t bright=map(particles3D[i].z+5,0,10,50,255);if(screenX>=0&&screenX<COLS&&screenY>=0&&screenY<ROWS)leds[xyToIndex(screenX,screenY)]=CHSV(particles3D[i].hue,255,bright);particles3D[i].hue=(particles3D[i].hue+2)%255;} particle3DTime+=map(effectSpeed,1,100,1,4) * 5; }
+
+// 45:matrix3DTunnel
+void matrix3DTunnel() { for(int c=0;c<COLS;c++)for(int r=0;r<ROWS;r++){float dx=c-centerCol,dy=(r-centerRow)/aspectRatio,dist=sqrt(dx*dx+dy*dy),angle=atan2(dy,dx);float depth=(tunnelTime*0.5)-dist*3;uint8_t hue=(int)(angle*40+depth)%255,bright=255-(dist*8);if(bright>255)bright=255;if(bright<0)bright=0;leds[xyToIndex(c,r)]=CHSV(hue,255,bright);} tunnelTime+=map(effectSpeed,1,100,2,10) * 5; }
+
+// 46:matrixCubeWaves
+void matrixCubeWaves() { for(int c=0;c<COLS;c++)for(int r=0;r<ROWS;r++){int x=map(c,0,COLS,0,16),y=map((int)(r/aspectRatio),0,(int)(ROWS/aspectRatio),0,16);int waveX=sin8((x*10+cubeWaveTime)%255),waveY=sin8((y*10+cubeWaveTime*2)%255),waveZ=sin8((x*5+y*5+cubeWaveTime*3)%255);uint8_t hue=(waveX+waveY)%255;leds[xyToIndex(c,r)]=CHSV(hue,255,waveZ);} cubeWaveTime+=map(effectSpeed,1,100,2,8) * 5; }
+
+// 47:matrixRotatingCube
+void matrixRotatingCube() { int cubePoints[8][3]={{-3,-3,-3},{3,-3,-3},{3,3,-3},{-3,3,-3},{-3,-3,3},{3,-3,3},{3,3,3},{-3,3,3}}; float rad=rotatingCubeAngle*PI/180,cosA=cos(rad),sinA=sin(rad); fill_solid(leds,NUM_LEDS,CRGB(0,0,0)); for(int i=0;i<8;i++){int x=cubePoints[i][0]*cosA-cubePoints[i][2]*sinA,z=cubePoints[i][0]*sinA+cubePoints[i][2]*cosA,y=cubePoints[i][1];int screenX=(int)(centerCol+x*1.2),screenY=(int)(centerRow+y*1.2*aspectRatio);uint8_t bright=map(z,-5,5,50,255);if(screenX>=0&&screenX<COLS&&screenY>=0&&screenY<ROWS)leds[xyToIndex(screenX,screenY)]=CHSV((rotatingCubeAngle+i*45)%255,255,bright);} rotatingCubeAngle+=map(effectSpeed,1,100,2,8) * 5; if(rotatingCubeAngle>=360)rotatingCubeAngle-=360; }
     
     <!-- تأثيرات جديدة -->
     <div class="effect-card">
