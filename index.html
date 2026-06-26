@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Matrix Effects Hub</title>
+    <style>
+        *{margin:0;padding:0;box-sizing:border-box}
+        body{background:#0a0a1a;color:#fff;font-family:sans-serif;padding:20px}
+        .container{max-width:900px;margin:auto;background:rgba(20,25,45,.85);border-radius:28px;padding:30px 25px;border:1px solid rgba(255,255,255,.08)}
+        .header{text-align:center;margin-bottom:25px;border-bottom:1px solid #2a2f45;padding-bottom:15px}
+        .header h1{font-size:28px;background:linear-gradient(90deg,#00d2ff,#928dab);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+        .header p{color:#8892b0;font-size:14px}
+        .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:15px;margin-top:15px}
+        .card{background:rgba(0,0,0,.3);border-radius:14px;padding:20px 15px;text-align:center;text-decoration:none;color:#fff;border:1px solid #2a3050;transition:all .3s;display:block}
+        .card:hover{transform:translateY(-4px);border-color:#00ff88;box-shadow:0 8px 30px rgba(0,255,136,.1)}
+        .card .icon{font-size:32px;display:block;margin-bottom:8px;font-weight:bold;color:#00ff88}
+        .card .title{font-weight:bold;font-size:15px}
+        .card .desc{font-size:11px;color:#94a3b8;margin-top:4px}
+        .card.locked .title::after{content:" (Locked)";font-size:10px;color:#f59e0b}
+        .card.locked{border-color:#f59e0b}
+        .card-public{border-color:#2563eb}
+        .card-stats{border-color:#8b5cf6}
+        .card-blog{border-color:#ec4899}
+        .card-gallery{border-color:#f59e0b}
+        .footer{text-align:center;color:#475569;font-size:12px;margin-top:25px;border-top:1px solid #2a2f45;padding-top:15px}
+        @media(max-width:480px){.grid{grid-template-columns:1fr 1fr}}
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Matrix Effects Hub</h1>
+            <p>Your complete source for matrix effects, tutorials, and updates</p>
+        </div>
+        <div class="grid">
+            <a href="/effects/" class="card card-public"><span class="icon">[E]</span><span class="title">Effects</span><span class="desc">Download basic effects</span></a>
+            <a href="/mixed/" class="card locked"><span class="icon">[M]</span><span class="title">Mixed</span><span class="desc">Effects + Text + Settings</span></a>
+            <a href="/videos/" class="card locked"><span class="icon">[V]</span><span class="title">Videos</span><span class="desc">Learn how to use</span></a>
+            <a href="/gallery/" class="card card-gallery"><span class="icon">[G]</span><span class="title">Gallery</span><span class="desc">Matrix displays</span></a>
+            <a href="/blog/" class="card card-blog"><span class="icon">[B]</span><span class="title">Blog</span><span class="desc">News and updates</span></a>
+            <a href="/stats/" class="card card-stats"><span class="icon">[S]</span><span class="title">Stats</span><span class="desc">Download analytics</span></a>
+            <a href="/faq/" class="card card-public"><span class="icon">[Q]</span><span class="title">FAQ</span><span class="desc">Frequently asked questions</span></a>
+            <a href="/contact/" class="card card-public"><span class="icon">[C]</span><span class="title">Contact</span><span class="desc">Send us a message</span></a>
+        </div>
+        <div class="footer">Locked sections require password</div>
+    </div>
+</body>
+</html>
