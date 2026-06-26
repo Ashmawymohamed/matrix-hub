@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mixed Effects</title>
+    <style>
+        *{margin:0;padding:0;box-sizing:border-box}
+        body{background:#0a0a1a;color:#fff;font-family:sans-serif;padding:20px}
+        .container{max-width:700px;margin:auto;background:rgba(20,25,45,.85);border-radius:28px;padding:30px 25px;border:1px solid rgba(255,255,255,.08)}
+        h1{text-align:center}
+        .back-btn{display:inline-block;background:#334155;color:#fff;padding:8px 20px;border-radius:30px;text-decoration:none;font-size:13px;margin-bottom:15px}
+        .locked-badge{color:#f59e0b;text-align:center;margin:10px 0}
+        .effect-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+        .effect-card{background:#13182b;border-radius:12px;padding:15px;border:1px solid #f59e0b}
+        .effect-card .name{font-weight:bold;font-size:14px;color:#f59e0b}
+        .effect-card .desc{font-size:12px;color:#94a3b8}
+        .download-btn{display:inline-block;background:linear-gradient(90deg,#f59e0b,#d97706);color:#000;padding:6px 16px;border-radius:30px;text-decoration:none;font-size:12px;font-weight:bold;margin-top:6px}
+        @media(max-width:480px){.effect-grid{grid-template-columns:1fr}}
+    </style>
+</head>
+<body>
+    <div class="container">
+        <a href="/" class="back-btn">Back to Hub</a>
+        <h1>Mixed Effects</h1>
+        <div class="locked-badge">🔒 This section is password protected</div>
+        <p style="text-align:center;color:#94a3b8;margin-bottom:20px;">Effects combined with text, speed, and brightness settings</p>
+        <div class="effect-grid">
+            <div class="effect-card">
+                <div class="name">Mixed Effect 1</div>
+                <div class="desc">ID: 200 | Speed: 60 | Bright: 200</div>
+                <a href="/files/mixed/mixed1.cfg" download class="download-btn">Download</a>
+            </div>
+            <div class="effect-card">
+                <div class="name">Mixed Effect 2</div>
+                <div class="desc">ID: 201 | Speed: 50 | Bright: 180</div>
+                <a href="/files/mixed/mixed2.cfg" download class="download-btn">Download</a>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
