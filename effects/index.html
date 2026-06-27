@@ -140,6 +140,32 @@
         const counter = document.getElementById('fileCounter');
         let currentFilter = 'all';
 
+        // دالة لتسجيل التحميل
+function trackDownload(fileName) {
+    // تخزين التحميلات في localStorage
+    let downloads = JSON.parse(localStorage.getItem('fileDownloads') || '{}');
+    downloads[fileName] = (downloads[fileName] || 0) + 1;
+    localStorage.setItem('fileDownloads', JSON.stringify(downloads));
+    
+    // تحديث العداد في الواجهة
+    updateDownloadCounts();
+}
+
+// دالة لعرض عدادات التحميل
+function updateDownloadCounts() {
+    const downloads = JSON.parse(localStorage.getItem('fileDownloads') || '{}');
+    document.querySelectorAll('.file-card').forEach(card => {
+        const fileName = card.dataset.file;
+        if (fileName && downloads[fileName]) {
+            const counter = card.querySelector('.download-count');
+            if (counter) counter.textContent = downloads[fileName];
+        }
+    });
+}
+
+// استدعاء عند تحميل الصفحة
+updateDownloadCounts();
+
         // دالة عرض الملفات
         function renderFiles(filter = 'all', search = '') {
             const filtered = configFiles.filter(file => {
