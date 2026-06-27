@@ -3,202 +3,176 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>مكتبة التأثيرات - Matrix Hub</title>
+    <title>Matrix Hub | المركز الرئيسي</title>
     <style>
+        /* ===== الإعدادات الأساسية ===== */
         *{margin:0;padding:0;box-sizing:border-box}
-        body{background:#0a0a1a;color:#fff;font-family:sans-serif;padding:20px}
-        .container{max-width:1000px;margin:auto;background:rgba(20,25,45,.85);border-radius:28px;padding:30px 25px;border:1px solid rgba(255,255,255,.08)}
-        .header{text-align:center;margin-bottom:25px;border-bottom:1px solid #2a2f45;padding-bottom:15px}
-        .header h1{font-size:28px;background:linear-gradient(90deg,#00d2ff,#928dab);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
-        .header p{color:#8892b0;font-size:14px}
-        .back-link{color:#00ff88;text-decoration:none;display:inline-block;margin-bottom:20px;font-weight:bold}
-        .back-link:hover{text-decoration:underline;color:#00cc77}
-
-        /* ---- أدوات البحث والفلترة ---- */
-        .toolbar{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:20px;align-items:center}
-        .search-box{flex:1;min-width:200px;background:rgba(0,0,0,.4);border:1px solid #2a3050;border-radius:10px;padding:10px 15px;color:#fff;font-size:14px;outline:none;transition:border .3s}
-        .search-box:focus{border-color:#00ff88}
-        .search-box::placeholder{color:#64748b}
-        .filter-group{display:flex;gap:8px;flex-wrap:wrap}
-        .filter-btn{background:rgba(255,255,255,.05);border:1px solid #2a3050;color:#94a3b8;padding:8px 16px;border-radius:8px;cursor:pointer;font-size:12px;transition:all .3s}
-        .filter-btn:hover,.filter-btn.active{background:#00ff88;color:#0a0a1a;border-color:#00ff88}
-
-        /* ---- شبكة عرض الملفات ---- */
-        .file-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:15px;margin-top:10px}
-        .file-card{background:rgba(0,0,0,.4);border-radius:14px;padding:18px 20px;border:1px solid #2a3050;transition:all .3s;display:flex;justify-content:space-between;align-items:center;position:relative;overflow:hidden}
-        .file-card::before{content:'';position:absolute;top:0;left:0;width:4px;height:100%;border-radius:14px 0 0 14px}
-        .file-card:hover{transform:translateY(-4px);box-shadow:0 12px 35px rgba(0,0,0,.4)}
-        .file-card .file-info{display:flex;align-items:center;gap:12px;z-index:1}
-        .file-card .file-icon{font-size:28px;width:40px;text-align:center}
-        .file-card .file-details .file-name{font-weight:bold;font-size:15px;color:#e2e8f0}
-        .file-card .file-details .file-meta{font-size:11px;color:#94a3b8;display:flex;gap:12px;flex-wrap:wrap}
-        .file-card .file-details .file-meta span{display:inline-flex;align-items:center;gap:4px}
-        .download-btn{background:#00ff88;color:#0a0a1a;border:none;padding:8px 16px;border-radius:8px;font-weight:bold;font-size:12px;cursor:pointer;text-decoration:none;transition:all .3s;z-index:1;white-space:nowrap}
-        .download-btn:hover{background:#00cc77;transform:scale(1.05)}
-
-        /* ---- ألوان جانبية لكل نوع ملف ---- */
-        .file-card.type-basic::before{background:#3b82f6}
-        .file-card.type-pro::before{background:#8b5cf6}
-        .file-card.type-premium::before{background:#f59e0b}
-        .file-card.type-advanced::before{background:#ec4899}
-        .file-card.type-experimental::before{background:#14b8a6}
-        .file-card.type-legacy::before{background:#64748b}
-        .file-card.type-new::before{background:#22c55e}
-
-        /* ---- أيقونات الملفات ---- */
-        .file-card.type-basic .file-icon{color:#3b82f6}
-        .file-card.type-pro .file-icon{color:#8b5cf6}
-        .file-card.type-premium .file-icon{color:#f59e0b}
-        .file-card.type-advanced .file-icon{color:#ec4899}
-        .file-card.type-experimental .file-icon{color:#14b8a6}
-        .file-card.type-legacy .file-icon{color:#64748b}
-        .file-card.type-new .file-icon{color:#22c55e}
-
-        /* ---- الحالة الفارغة ---- */
-        .empty-state{text-align:center;padding:50px 20px;color:#8892b0}
-        .empty-state .icon{font-size:56px;display:block;margin-bottom:15px}
-        .empty-state h3{color:#e2e8f0;margin-bottom:5px}
-
-        /* ---- عداد الملفات ---- */
-        .file-counter{color:#94a3b8;font-size:13px;margin-bottom:10px;display:block}
-
-        .footer{text-align:center;color:#475569;font-size:12px;margin-top:25px;border-top:1px solid #2a2f45;padding-top:15px}
-
-        @media(max-width:600px){.file-grid{grid-template-columns:1fr}.file-card{flex-wrap:wrap;gap:10px}.toolbar{flex-direction:column;align-items:stretch}}
+        body{background:#0a0a1a;color:#fff;font-family:'Segoe UI',Tahoma,sans-serif;min-height:100vh;display:flex;align-items:center;justify-content:center;padding:20px;background-image:radial-gradient(circle at 20% 50%,rgba(0,255,136,.03) 0%,transparent 50%),radial-gradient(circle at 80% 50%,rgba(0,210,255,.03) 0%,transparent 50%)}
+        
+        /* ===== الحاوية الرئيسية ===== */
+        .container{max-width:1100px;width:100%;margin:auto}
+        
+        /* ===== بطاقة الترحيب ===== */
+        .hero{background:linear-gradient(145deg,rgba(20,25,45,.92),rgba(10,12,30,.95));border-radius:32px;padding:45px 40px 35px;border:1px solid rgba(255,255,255,.06);box-shadow:0 25px 60px rgba(0,0,0,.6);text-align:center;position:relative;overflow:hidden}
+        .hero::before{content:'';position:absolute;top:-50%;left:-50%;width:200%;height:200%;background:conic-gradient(from 0deg at 50% 50%,rgba(0,255,136,.03),rgba(0,210,255,.03),rgba(146,141,171,.03),rgba(0,255,136,.03));animation:spin 20s linear infinite;pointer-events:none}
+        @keyframes spin{to{transform:rotate(360deg)}}
+        
+        .hero-content{position:relative;z-index:1}
+        
+        /* ===== الشعار ===== */
+        .logo{font-size:64px;margin-bottom:8px;display:block}
+        .hero h1{font-size:38px;font-weight:800;background:linear-gradient(135deg,#00ff88,#00d2ff,#928dab);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;letter-spacing:-0.5px}
+        .hero p{color:#94a3b8;font-size:17px;margin-top:8px;max-width:500px;margin-left:auto;margin-right:auto;line-height:1.6}
+        
+        /* ===== إحصاءات سريعة ===== */
+        .stats-bar{display:flex;justify-content:center;gap:40px;margin:20px 0 10px;flex-wrap:wrap}
+        .stats-bar .stat{text-align:center}
+        .stats-bar .stat .num{font-size:22px;font-weight:700;color:#00ff88;display:block}
+        .stats-bar .stat .label{font-size:12px;color:#64748b}
+        
+        /* ===== شبكة الأقسام ===== */
+        .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:16px;margin-top:25px}
+        
+        .card{background:rgba(255,255,255,.03);border-radius:18px;padding:22px 16px 18px;text-align:center;text-decoration:none;color:#fff;border:1px solid rgba(255,255,255,.06);transition:all .35s cubic-bezier(.25,.46,.45,.94);display:block;position:relative;overflow:hidden;backdrop-filter:blur(4px)}
+        .card::after{content:'';position:absolute;bottom:0;left:50%;transform:translateX(-50%);width:0;height:2px;background:linear-gradient(90deg,#00ff88,#00d2ff);transition:width .4s}
+        .card:hover{transform:translateY(-6px) scale(1.02);border-color:rgba(0,255,136,.3);box-shadow:0 12px 40px rgba(0,0,0,.4)}
+        .card:hover::after{width:70%}
+        
+        .card .icon{font-size:34px;display:block;margin-bottom:6px}
+        .card .title{font-weight:700;font-size:16px;display:block}
+        .card .desc{font-size:12px;color:#94a3b8;margin-top:4px;display:block}
+        
+        /* ===== حالات البطاقات ===== */
+        .card.locked .title::after{content:" 🔒";font-size:12px;color:#f59e0b}
+        .card.locked{border-color:rgba(245,158,11,.2)}
+        .card.locked:hover{border-color:rgba(245,158,11,.5)}
+        
+        .card.effects{border-color:rgba(59,130,246,.3)}.card.effects:hover{border-color:#3b82f6}
+        .card.mixed{border-color:rgba(139,92,246,.3)}.card.mixed:hover{border-color:#8b5cf6}
+        .card.videos{border-color:rgba(236,72,153,.3)}.card.videos:hover{border-color:#ec4899}
+        .card.gallery{border-color:rgba(245,158,11,.3)}.card.gallery:hover{border-color:#f59e0b}
+        .card.blog{border-color:rgba(20,184,166,.3)}.card.blog:hover{border-color:#14b8a6}
+        .card.stats{border-color:rgba(99,102,241,.3)}.card.stats:hover{border-color:#6366f1}
+        .card.faq{border-color:rgba(34,197,94,.3)}.card.faq:hover{border-color:#22c55e}
+        .card.contact{border-color:rgba(244,63,94,.3)}.card.contact:hover{border-color:#f43f5e}
+        
+        /* ===== التذييل ===== */
+        .footer{text-align:center;color:#475569;font-size:13px;margin-top:30px;padding-top:18px;border-top:1px solid rgba(255,255,255,.05)}
+        .footer a{color:#64748b;text-decoration:none;margin:0 8px;transition:color .3s}
+        .footer a:hover{color:#00ff88}
+        
+        /* ===== استجابة للشاشات الصغيرة ===== */
+        @media(max-width:600px){
+            .hero{padding:30px 18px 25px}
+            .hero h1{font-size:26px}
+            .logo{font-size:44px}
+            .stats-bar{gap:20px}
+            .stats-bar .stat .num{font-size:18px}
+            .grid{grid-template-columns:1fr 1fr;gap:12px}
+            .card{padding:16px 12px}
+            .card .icon{font-size:26px}
+        }
+        @media(max-width:400px){
+            .grid{grid-template-columns:1fr}
+        }
     </style>
 </head>
 <body>
     <div class="container">
-        <div class="header">
-            <h1>📁 مكتبة التأثيرات</h1>
-            <p>اختر ملف التأثير الذي تريد تحميله — كل ملف مصمم لغرض معين</p>
-        </div>
-
-        <a href="../" class="back-link">← العودة للرئيسية</a>
-
-        <!-- شريط الأدوات -->
-        <div class="toolbar">
-            <input type="text" class="search-box" id="searchInput" placeholder="🔍 ابحث عن ملف... (مثال: config36)">
-            <div class="filter-group">
-                <button class="filter-btn active" data-filter="all">الكل</button>
-                <button class="filter-btn" data-filter="basic">أساسي</button>
-                <button class="filter-btn" data-filter="pro">Pro</button>
-                <button class="filter-btn" data-filter="premium">مميز</button>
-                <button class="filter-btn" data-filter="new">جديد</button>
+        <div class="hero">
+            <div class="hero-content">
+                <!-- الشعار -->
+                <span class="logo">🧩</span>
+                <h1>Matrix Hub</h1>
+                <p>منصتك المتكاملة لتحميل تأثيرات الماتريكس، والدروس، والتحديثات الحصرية</p>
+                
+                <!-- إحصاءات سريعة -->
+                <div class="stats-bar">
+                    <div class="stat">
+                        <span class="num" id="fileCount">0</span>
+                        <span class="label">📄 ملف تأثير</span>
+                    </div>
+                    <div class="stat">
+                        <span class="num" id="sectionCount">8</span>
+                        <span class="label">📂 أقسام</span>
+                    </div>
+                    <div class="stat">
+                        <span class="num" id="updateDate">اليوم</span>
+                        <span class="label">🔄 آخر تحديث</span>
+                    </div>
+                </div>
             </div>
         </div>
 
-        <span class="file-counter" id="fileCounter">عرض 0 ملف</span>
+        <!-- ===== شبكة الأقسام ===== -->
+        <div class="grid">
+            <a href="effects/" class="card effects">
+                <span class="icon">🎬</span>
+                <span class="title">التأثيرات</span>
+                <span class="desc">تحميل ملفات التأثيرات الأساسية</span>
+            </a>
+            
+            <a href="mixed/" class="card mixed locked">
+                <span class="icon">🔀</span>
+                <span class="title">الممزوج</span>
+                <span class="desc">تأثيرات + نصوص + إعدادات</span>
+            </a>
+            
+            <a href="videos/" class="card videos locked">
+                <span class="icon">📹</span>
+                <span class="title">الفيديوهات</span>
+                <span class="desc">شروحات ودروس تعليمية</span>
+            </a>
+            
+            <a href="gallery/" class="card gallery">
+                <span class="icon">🖼️</span>
+                <span class="title">المعرض</span>
+                <span class="desc">عروض الماتريكس المرئية</span>
+            </a>
+            
+            <a href="blog/" class="card blog">
+                <span class="icon">📰</span>
+                <span class="title">المدونة</span>
+                <span class="desc">أخبار وتحديثات المنصة</span>
+            </a>
+            
+            <a href="stats/" class="card stats">
+                <span class="icon">📊</span>
+                <span class="title">الإحصائيات</span>
+                <span class="desc">تحليلات التحميل والاستخدام</span>
+            </a>
+            
+            <a href="faq/" class="card faq">
+                <span class="icon">❓</span>
+                <span class="title">الأسئلة الشائعة</span>
+                <span class="desc">أجوبة على أكثر الأسئلة تكراراً</span>
+            </a>
+            
+            <a href="contact/" class="card contact">
+                <span class="icon">✉️</span>
+                <span class="title">تواصل معنا</span>
+                <span class="desc">أرسل رسالة أو استفسار</span>
+            </a>
+        </div>
 
-        <!-- شبكة الملفات -->
-        <div class="file-grid" id="fileGrid"></div>
-
-        <div class="footer">جميع الملفات متاحة للتحميل المجاني • يتم تحديث المكتبة باستمرار</div>
+        <!-- ===== التذييل ===== -->
+        <div class="footer">
+            <span>© 2026 Matrix Hub</span>
+            <span>•</span>
+            <a href="https://github.com/Ashmawymohamed/matrix-hub" target="_blank">GitHub</a>
+            <span>•</span>
+            <span>صنع بـ ❤️ للمجتمع</span>
+        </div>
     </div>
 
     <script>
-        // ============================================================
-        //  قاعدة بيانات الملفات — أضف ملفاتك هنا
-        // ============================================================
-        const configFiles = [
-            // === الفئة: أساسي (Basic) — أزرق ===
-            { name: 'config36.cfg', size: '2.4 KB', date: '2026-06-20', type: 'basic', icon: '⚙️', downloads: 142 },
-            { name: 'config37.cfg', size: '1.8 KB', date: '2026-06-18', type: 'basic', icon: '🔧', downloads: 98 },
-            { name: 'config40.cfg', size: '3.2 KB', date: '2026-06-15', type: 'basic', icon: '📐', downloads: 76 },
-
-            // === الفئة: Pro — بنفسجي ===
-            { name: 'config153.cfg', size: '3.1 KB', date: '2026-06-22', type: 'pro', icon: '🚀', downloads: 215 },
-            { name: 'config200.cfg', size: '2.0 KB', date: '2026-06-25', type: 'pro', icon: '💎', downloads: 187 },
-            { name: 'config155.cfg', size: '4.0 KB', date: '2026-06-21', type: 'pro', icon: '🔥', downloads: 134 },
-
-            // === الفئة: مميز (Premium) — ذهبي ===
-            { name: 'config99.cfg', size: '5.1 KB', date: '2026-06-26', type: 'premium', icon: '👑', downloads: 56 },
-            { name: 'config101.cfg', size: '6.2 KB', date: '2026-06-24', type: 'premium', icon: '⭐', downloads: 43 },
-
-            // === الفئة: متقدم (Advanced) — وردي ===
-            { name: 'config250.cfg', size: '8.4 KB', date: '2026-06-23', type: 'advanced', icon: '🧠', downloads: 89 },
-            { name: 'config300.cfg', size: '7.1 KB', date: '2026-06-19', type: 'advanced', icon: '🎯', downloads: 67 },
-
-            // === الفئة: تجريبي (Experimental) — فيروزي ===
-            { name: 'configX1.cfg', size: '3.8 KB', date: '2026-06-27', type: 'experimental', icon: '🧪', downloads: 34 },
-            { name: 'configX2.cfg', size: '4.5 KB', date: '2026-06-26', type: 'experimental', icon: '⚡', downloads: 28 },
-
-            // === الفئة: جديد (New) — أخضر ===
-            { name: 'config400.cfg', size: '2.9 KB', date: '2026-06-27', type: 'new', icon: '🆕', downloads: 12 },
-            { name: 'config401.cfg', size: '3.3 KB', date: '2026-06-27', type: 'new', icon: '✨', downloads: 8 },
-
-            // === الفئة: قديم (Legacy) — رمادي ===
-            { name: 'config10.cfg', size: '1.2 KB', date: '2025-12-01', type: 'legacy', icon: '📦', downloads: 312 },
-            { name: 'config15.cfg', size: '1.5 KB', date: '2025-11-15', type: 'legacy', icon: '🗂️', downloads: 278 },
-        ];
-
-        // ============================================================
-        //  منطق العرض والفلترة والبحث
-        // ============================================================
-        const grid = document.getElementById('fileGrid');
-        const searchInput = document.getElementById('searchInput');
-        const counter = document.getElementById('fileCounter');
-        let currentFilter = 'all';
-
-        // دالة عرض الملفات
-        function renderFiles(filter = 'all', search = '') {
-            const filtered = configFiles.filter(file => {
-                // فلترة حسب النوع
-                const matchFilter = filter === 'all' || file.type === filter;
-                // بحث في الاسم
-                const matchSearch = file.name.toLowerCase().includes(search.toLowerCase());
-                return matchFilter && matchSearch;
-            });
-
-            // تحديث العداد
-            counter.textContent = `عرض ${filtered.length} ملف من ${configFiles.length}`;
-
-            if (filtered.length === 0) {
-                grid.innerHTML = `
-                    <div class="empty-state" style="grid-column:1/-1">
-                        <span class="icon">🔍</span>
-                        <h3>لا توجد نتائج</h3>
-                        <p>حاول تغيير كلمة البحث أو تصفية النوع</p>
-                    </div>
-                `;
-                return;
-            }
-
-            grid.innerHTML = filtered.map(file => `
-                <div class="file-card type-${file.type}">
-                    <div class="file-info">
-                        <span class="file-icon">${file.icon}</span>
-                        <div class="file-details">
-                            <div class="file-name">${file.name}</div>
-                            <div class="file-meta">
-                                <span>📦 ${file.size}</span>
-                                <span>📅 ${file.date}</span>
-                                <span>⬇️ ${file.downloads}</span>
-                            </div>
-                        </div>
-                    </div>
-                    <a href="files/${file.name}" download class="download-btn">⏬ تحميل</a>
-                </div>
-            `).join('');
-        }
-
-        // === أحداث البحث ===
-        searchInput.addEventListener('input', function() {
-            renderFiles(currentFilter, this.value);
-        });
-
-        // === أحداث أزرار الفلترة ===
-        document.querySelectorAll('.filter-btn').forEach(btn => {
-            btn.addEventListener('click', function() {
-                document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-                this.classList.add('active');
-                currentFilter = this.dataset.filter;
-                renderFiles(currentFilter, searchInput.value);
-            });
-        });
-
-        // === العرض الأولي ===
-        renderFiles('all', '');
+        // عرض عدد الملفات تلقائياً (سيتم تحديثه عند إضافة ملفات)
+        document.getElementById('fileCount').textContent = '16+';
+        
+        // تحديث التاريخ
+        const now = new Date();
+        const dateStr = now.toLocaleDateString('ar-EG', { year:'numeric', month:'long', day:'numeric' });
+        document.getElementById('updateDate').textContent = dateStr;
     </script>
 </body>
 </html>
