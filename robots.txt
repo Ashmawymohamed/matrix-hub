@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://Ashmawymohamed.github.io/matrix-hub/sitemap.xml
